@@ -4,203 +4,396 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Альянс «Рехаб Південь»</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary: #0b2545;
-            --accent: #00a896;
-            --accent-hover: #028090;
-            --bg-light: #f4f7f6;
-            --text-dark: #1d2d44;
-            --text-light: #ffffff;
-            --card-bg: #ffffff;
+            --navy-deep: #061325;
+            --navy-main: #0B2545;
+            --navy-surface: #134074;
+            --teal-accent: #00A896;
+            --teal-bright: #02C39A;
+            --teal-glow: rgba(0, 168, 150, 0.25);
+            --bg-light: #F4F7F6;
+            --text-dark: #0D1F2D;
+            --text-muted: #4A5568;
+            --white: #FFFFFF;
+            
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 10px;
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        /* HEADER */
         header {
-            background-color: var(--primary);
-            color: var(--text-light);
-            padding: 1rem 2rem;
+            background: rgba(11, 37, 69, 0.95);
+            backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .nav-container {
-            max-width: 1200px;
+        .header-container {
+            max-width: 1240px;
             margin: 0 auto;
+            padding: 1.2rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-light);
-            text-decoration: none;
+        .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--teal-accent), var(--navy-surface));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 14px var(--teal-glow);
+        }
+
+        .logo-text {
+            color: var(--white);
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
         .logo-text span {
-            color: var(--accent);
+            color: var(--teal-accent);
         }
 
-        nav ul {
+        .nav-links {
             display: flex;
+            gap: 32px;
             list-style: none;
-            gap: 20px;
         }
 
-        nav a {
-            color: var(--text-light);
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
         }
 
-        nav a:hover {
-            color: var(--accent);
+        .nav-links a:hover {
+            color: var(--teal-accent);
         }
 
+        /* HERO SECTION */
         .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, #134074 100%);
-            color: var(--text-light);
-            padding: 80px 20px;
+            background: radial-gradient(circle at 80% 20%, rgba(0, 168, 150, 0.15) 0%, transparent 40%),
+                        linear-gradient(180deg, var(--navy-deep) 0%, var(--navy-main) 100%);
+            color: var(--white);
+            padding: 120px 20px 100px;
+            position: relative;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+
+        .hero-inner {
+            max-width: 1000px;
+            margin: 0 auto;
             text-align: center;
         }
 
-        .hero-container {
-            max-width: 900px;
-            margin: 0 auto;
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 168, 150, 0.12);
+            border: 1px solid rgba(0, 168, 150, 0.3);
+            color: var(--teal-bright);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
         }
 
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.75);
+            max-width: 780px;
+            margin: 0 auto 40px;
+            font-weight: 400;
         }
 
-        .btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: var(--text-light);
-            padding: 12px 30px;
-            border-radius: 6px;
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--teal-accent) 0%, #008f80 100%);
+            color: var(--white);
+            padding: 16px 36px;
+            border-radius: 14px;
             text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.3s, transform 0.2s;
+            font-weight: 700;
+            font-size: 1.05rem;
+            box-shadow: 0 10px 25px var(--teal-glow);
+            transition: all 0.3s var(--transition-smooth);
         }
 
-        .btn:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 168, 150, 0.4);
+            background: linear-gradient(135deg, var(--teal-bright) 0%, var(--teal-accent) 100%);
         }
 
-        section {
-            padding: 60px 20px;
-            max-width: 1200px;
+        /* SECTION LAYOUT */
+        .section {
+            padding: 100px 20px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
-        .section-title {
+        .section-header {
             text-align: center;
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 40px;
+            margin-bottom: 60px;
+        }
+
+        .section-subtitle {
+            color: var(--teal-accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--navy-deep);
+            letter-spacing: -0.02em;
+        }
+
+        /* ABOUT BOX */
+        .about-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            border: 1px solid rgba(11, 37, 69, 0.06);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
             position: relative;
+            overflow: hidden;
         }
 
-        .section-title::after {
+        .about-card::before {
             content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: var(--accent);
-            margin: 10px auto 0;
-            border-radius: 2px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--teal-accent);
         }
 
-        .grid {
+        .about-text {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .about-text strong {
+            color: var(--navy-deep);
+        }
+
+        /* CARDS GRID (3 + 1 CENTERED LAYOUT) */
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
         }
 
         .card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid var(--accent);
-            transition: transform 0.3s;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 36px 30px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            transition: all 0.4s var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* 4-та картка розміщується по центру під 3-ма вище */
+        .card-centered {
+            grid-column: 2 / 3;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            border-radius: var(--radius-lg);
+            transform: translateY(-8px);
+            box-shadow: 0 22px 45px rgba(11, 37, 69, 0.12);
+            border-color: rgba(0, 168, 150, 0.3);
+        }
+
+        .card-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: var(--radius-md);
+            background: rgba(0, 168, 150, 0.08);
+            color: var(--teal-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover .card-icon {
+            background: var(--teal-accent);
+            color: var(--white);
+            transform: scale(1.08);
         }
 
         .card h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--navy-deep);
+            margin-bottom: 12px;
+            line-height: 1.3;
         }
 
-        .contact-info {
-            background-color: var(--primary);
-            color: var(--text-light);
-            border-radius: 12px;
-            padding: 40px;
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.65;
+        }
+
+        /* CONTACT CARD */
+        .contact-box {
+            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-main) 100%);
+            border-radius: 32px;
+            padding: 60px 40px;
             text-align: center;
+            color: var(--white);
+            box-shadow: 0 25px 50px rgba(6, 19, 37, 0.25);
+            position: relative;
+            overflow: hidden;
         }
 
-        .contact-info a {
-            color: var(--accent);
-            text-decoration: none;
+        .contact-box h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .contact-box p {
+            color: rgba(255, 255, 255, 0.7);
             font-size: 1.1rem;
-            word-break: break-all;
+            margin-bottom: 32px;
         }
 
-        .contact-info a:hover {
-            text-decoration: underline;
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 16px 32px;
+            border-radius: 16px;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s var(--transition-smooth);
         }
 
+        .social-link:hover {
+            background: var(--white);
+            color: var(--navy-deep);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* FOOTER */
         footer {
-            background-color: #051329;
-            color: #8d99ae;
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
+            color: var(--text-muted);
             font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
         }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 1.8rem;
+        /* ADAPTIVE DESIGN */
+        @media (max-width: 992px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .nav-container {
+            .card-centered {
+                grid-column: span 2;
+                max-width: 500px;
+                margin: 0 auto;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header-container {
                 flex-direction: column;
-                gap: 15px;
+                gap: 16px;
+            }
+            .nav-links {
+                gap: 16px;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-centered {
+                grid-column: span 1;
+            }
+            .about-card {
+                padding: 28px;
+            }
+            .hero {
+                padding: 80px 20px 60px;
             }
         }
     </style>
@@ -208,69 +401,102 @@
 <body>
 
     <header>
-        <div class="nav-container">
-            <a href="#" class="logo-text">РЕХАБ <span>ПІВДЕНЬ</span></a>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">⚓</div>
+                <div class="logo-text">РЕХАБ <span>ПІВДЕНЬ</span></div>
+            </a>
             <nav>
-                <ul>
-                    <li><a href="#about">Про альянс</a></li>
-                    <li><a href="#goals">Мета та напрями</a></li>
+                <ul class="nav-links">
+                    <li><a href="#about">Про Альянс</a></li>
+                    <li><a href="#goals">Напрями</a></li>
                     <li><a href="#contacts">Контакти</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-container">
-            <h1>Альянс професійних реабілітаційних закладів півдня України «Рехаб Південь»</h1>
-            <p>Об'єднуємо зусилля фахівців задля розвитку та посилення сфери фізичної та психологічної реабілітації.</p>
-            <a href="#contacts" class="btn">Приєднатися до Альянсу</a>
-        </div>
-    </section>
-
-    <section id="about">
-        <h2 class="section-title">Про Нас</h2>
-        <p style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1rem;">
-            «Рехаб Південь» — це об'єднання реабілітаційних закладів та провідних фахівців, спрямоване на підвищення якості, доступності та ефективності реабілітаційної допомоги у південному регіоні України.
-        </p>
-    </section>
-
-    <section id="goals">
-        <h2 class="section-title">Мета та напрями діяльності</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Розвиток сфери реабілітації</h3>
-                <p>Посилення та системний розвиток галузі фізичної реабілітації на Півдні України.</p>
-            </div>
-            <div class="card">
-                <h3>Якість та доступність</h3>
-                <p>Підвищення якості, ефективності та доступності реабілітаційної допомоги для всіх пацієнтів.</p>
-            </div>
-            <div class="card">
-                <h3>Професійне зростання</h3>
-                <p>Сприяння безперервному розвитку фахівців: фізичних терапевтів, ерготерапевтів, психологів та суміжних спеціалістів.</p>
-            </div>
-            <div class="card">
-                <h3>Популяризація культури</h3>
-                <p>Формування та популяризація реабілітаційної культури в сучасному суспільстві.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="contacts">
-        <div class="contact-info">
-            <h2 style="margin-bottom: 20px;">Зв'яжіться з нами</h2>
-            <p style="margin-bottom: 15px;">Слідкуйте за нашими новинами та заходами на официальній сторінці Facebook:</p>
-            <p>
-                <a href="https://www.facebook.com/profile.php?id=61585310725034" target="_blank" rel="noopener noreferrer">
-                    Facebook: Альянс «Рехаб Південь»
+    <main>
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="badge">Об'єднання професіоналів</div>
+                <h1>Альянс професійних реабілітаційних закладів півдня України</h1>
+                <p>Об'єднуємо зусилля закладів та фахівців задля розвитку фізичної терапії, ерготерапії та психологічної реабілітації у регіоні.</p>
+                <a href="#contacts" class="btn-primary">
+                    Долучитися до Альянсу
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </a>
-            </p>
-        </div>
-    </section>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="section-header">
+                <div class="section-subtitle">Про нас</div>
+                <h2 class="section-title">Місія Альянсу</h2>
+            </div>
+            <div class="about-card">
+                <p class="about-text">
+                    <strong>«Рехаб Південь»</strong> створений задля посилення сфери фізичної реабілітації на Півдні України. Ми підвищуємо якість, доступність та ефективність допомоги, підтримуємо професійний розвиток фахівців у галузях фізичної терапії, ерготерапії та психології, а також будуємо сучасну реабілітаційну культуру в суспільстві.
+                </p>
+            </div>
+        </section>
+
+        <section id="goals" class="section">
+            <div class="section-header">
+                <div class="section-subtitle">Діяльність</div>
+                <h2 class="section-title">Мета та ключові напрями</h2>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                    </div>
+                    <h3>Розвиток сфери</h3>
+                    <p>Системне посилення реабілітаційної галузі на Півдні України через впровадження доказових методик.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h3>Якість та доступність</h3>
+                    <p>Забезпечення пацієнтів прозорою, високоефективною та доступною реабілітаційною допомогою.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <h3>Розвиток фахівців</h3>
+                    <p>Безперервне навчання та підтримка фізичних терапевтів, ерготерапевтів і психологів.</p>
+                </div>
+
+                <!-- 4-та картка: відцентрована в сітці -->
+                <div class="card card-centered">
+                    <div class="card-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                    </div>
+                    <h3>Популяризація культури</h3>
+                    <p>Формування сучасної свідомої реабілітаційної культури в українському суспільстві.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacts" class="section">
+            <div class="contact-box">
+                <h2>Приєднуйтесь до Альянсу</h2>
+                <p>Слідкуйте за новинами, партнерствами та заходами на нашій сторінці.</p>
+                <a href="https://www.facebook.com/profile.php?id=61585310725034" target="_blank" rel="noopener noreferrer" class="social-link">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    Facebook Сторінка
+                </a>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <p>&copy; 2026 Альянс професійних реабілітаційних закладів півдня України «Рехаб Південь». Всі права захищено.</p>
+        <p>&copy; 2026 Альянс професійних реабілітаційних закладів півдня України «Рехаб Південь».</p>
     </footer>
 
 </body>
