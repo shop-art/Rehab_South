@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скріпка Кава | Нетиповий Кавовий Досвід</title>
+    
+    <!-- GSAP та ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        
+        @font-face {
+            font-family: 'Pilowlava';
+            src: url('https://fonts.cdnfonts.com/s/91224/Pilowlava-Regular.woff') format('woff');
+        }
+
+        :root {
+            --bg-cream: #FAF7F2;
+            --blue-accent: #3A669B;
+            --blue-dark: #1E3A5F;
+            --text-main: #141414;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        body { 
+            background: var(--bg-cream); 
+            color: var(--text-main); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden;
+        }
+
+        /* КАСТОМНИЙ КУРСОР */
+        #cursor-dot {
+            width: 8px; height: 8px; background: var(--blue-accent);
+            position: fixed; top: 0; left: 0; border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+        #cursor-outline {
+            width: 40px; height: 40px; border: 1.5px solid var(--blue-accent);
+            position: fixed; top: 0; left: 0; border-radius: 50%;
+            pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+            transition: transform 0.25s ease-out;
+        }
+
+        /* НАВІГАЦІЯ */
+        header {
+            position: fixed; top: 0; width: 100%; padding: 25px 6%;
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 1000; mix-blend-mode: difference;
+        }
+        .logo { 
+            font-family: 'Pilowlava', sans-serif; 
+            font-size: 2.8rem; color: #fff; text-decoration: none; 
+            letter-spacing: -1px; transition: transform 0.3s ease;
+        }
+        .logo:hover { transform: scale(1.05) rotate(-2deg); }
+
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-link { 
+            text-decoration: none; color: #fff; font-weight: 600; 
+            font-size: 0.95rem; letter-spacing: 2px; text-transform: uppercase;
+            position: relative; padding: 5px 0;
+        }
+
+        /* LIVE STATUS BADGE */
+        .status-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 6px 16px;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 1px;
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            background: #2ECC71;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #2ECC71;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* HERO SECTION */
+        .hero { 
+            min-height: 100vh; display: flex; align-items: center; 
+            padding: 0 6%; position: relative; justify-content: space-between;
+            overflow: hidden;
+        }
+        
+        .hero-text { flex: 0 0 50%; z-index: 10; margin-top: 60px; }
+        .hero-badge {
+            display: inline-block; padding: 8px 18px; border-radius: 50px;
+            background: rgba(74, 118, 168, 0.12); color: var(--blue-accent);
+            font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 25px; backdrop-filter: blur(10px);
+        }
+        .hero-text h1 { 
+            font-family: 'Pilowlava', sans-serif; font-size: clamp(4rem, 8.5vw, 9rem); 
+            line-height: 0.85; color: var(--blue-accent); margin-bottom: 30px; 
+        }
+        .hero-text p { 
+            font-size: 1.25rem; line-height: 1.6; margin-bottom: 45px; 
+            color: #4A4A4A; max-width: 480px; 
+        }
+
+        /* 3D ВІЗУАЛ СТАКАНЧИКА ТА ПЕРСОНАЖІ */
+        .hero-visual { 
+            flex: 0 0 50%; height: 100vh; display: flex; 
+            align-items: center; justify-content: center; position: relative; 
+        }
+        .cup-container { 
+            position: relative; z-index: 5; perspective: 1200px; 
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+        }
+        .cup-wrapper { position: relative; transform-style: preserve-3d; }
+        .cup-img { 
+            width: clamp(320px, 38vw, 520px); height: auto; 
+            filter: drop-shadow(0 35px 50px rgba(30, 58, 95, 0.18)); 
+            user-select: none; pointer-events: none;
+        }
+
+        /* СТИЛІ ІЛЮСТРАЦІЙ */
+        .hero-illustration {
+            position: absolute;
+            pointer-events: none;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.06));
+            transition: transform 0.2s ease-out;
+            opacity: 0.95;
+        }
+
+        /* ДІВЧИНА */
+        .girleating34 {
+            top: -2%;
+            left: -32%;
+            height: clamp(550px, 60vh, 750px) !important;
+            width: auto !important;
+            z-index: 2;
+        }
+
+        /* ХЛОПЕЦЬ */
+        .man-eating-hero {
+            bottom: 2%;
+            right: -8%;
+            height: clamp(380px, 40vh, 500px) !important;
+            width: auto !important;
+            z-index: 2;
+        }
+
+        .btn-primary { 
+            padding: 22px 48px; background: var(--blue-accent); color: white; 
+            text-decoration: none; border-radius: 100px; font-weight: 700; 
+            display: inline-flex; align-items: center; gap: 15px; transition: 0.4s ease;
+            box-shadow: 0 15px 35px rgba(74, 118, 168, 0.25);
+        }
+        .btn-primary:hover { 
+            transform: translateY(-5px) scale(1.03); 
+            background: var(--blue-dark);
+        }
+
+        /* БІЖУЧИЙ РЯДОК */
+        .marquee-container {
+            background: var(--blue-accent); color: #fff; padding: 20px 0;
+            overflow: hidden; white-space: nowrap; transform: rotate(-1.5deg) scale(1.02);
+            margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; z-index: 3;
+        }
+        .marquee-content {
+            display: inline-block; animation: marquee 20s linear infinite;
+            font-family: 'Pilowlava', sans-serif; font-size: 1.8rem; letter-spacing: 2px;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* РОЗШИРЕНЕ МЕНЮ ТА ЗРУЧНОСТІ */
+        .menu-section { 
+            padding: 80px 6%; position: relative; z-index: 2; 
+        }
+        .section-title {
+            font-family: 'Pilowlava', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem);
+            color: var(--blue-accent); margin-bottom: 50px; text-align: center; position: relative; z-index: 3;
+        }
+
+        /* ЗРУЧНОСТІ (ПЕРЕНЕСЕНІ ПЕРЕД МЕНЮ) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+        }
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 25px;
+            text-align: center;
+            transition: 0.3s ease;
+        }
+        .feature-card:hover { transform: translateY(-5px); }
+        .feature-icon { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+        .feature-card h4 { font-size: 1.15rem; color: var(--blue-dark); margin-bottom: 6px; }
+        .feature-card p { font-size: 0.9rem; color: #555; line-height: 1.4; }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 5;
+        }
+        .menu-category-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 35px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .menu-category-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+        .menu-category-card h3 {
+            font-size: 1.6rem;
+            color: var(--blue-dark);
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(58, 102, 155, 0.15);
+            padding-bottom: 12px;
+            font-family: 'Pilowlava', sans-serif;
+            letter-spacing: 1px;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 18px;
+            gap: 15px;
+        }
+        .menu-item-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+        .menu-item-desc {
+            font-size: 0.82rem;
+            color: #666;
+            display: block;
+            margin-top: 3px;
+        }
+        .menu-item-price {
+            font-weight: 700;
+            color: var(--blue-accent);
+            font-size: 0.95rem;
+            white-space: nowrap;
+            background: rgba(58, 102, 155, 0.08);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        /* ГАЛЕРЕЯ АТМОСФЕРИ */
+        .gallery-section {
+            padding: 100px 6%;
+            position: relative;
+            z-index: 5;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 28px;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            background: #e5e0d8;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            display: block;
+            text-decoration: none;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(30, 58, 95, 0.75), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 25px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.05rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* ВІДГУКИ */
+        .reviews-wrap { 
+            padding: 100px 6%; text-align: center; position: relative; z-index: 5;
+        }
+        .review-card { 
+            max-width: 800px; margin: 0 auto; padding: 60px 40px;
+            background: #fff; border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.04); position: relative; z-index: 2;
+        }
+        .review-text { 
+            font-size: 1.5rem; font-style: italic; line-height: 1.5; 
+            color: var(--blue-dark); margin-bottom: 25px; display: none; opacity: 0;
+        }
+        .review-text.active { display: block; opacity: 1; }
+        .review-stars { color: #FFD700; font-size: 1.4rem; margin-bottom: 12px; }
+        .author { font-size: 1.1rem; font-weight: 700; color: var(--blue-accent); text-transform: uppercase; }
+        .author-meta { font-size: 0.85rem; color: #777; margin-top: 4px; font-weight: 400; text-transform: none; }
+
+        .arrows { display: flex; justify-content: center; gap: 20px; margin-top: 40px; }
+        .arrow { 
+            width: 60px; height: 60px; border: 2px solid var(--blue-accent); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            color: var(--blue-accent); font-size: 1.5rem; transition: 0.3s; 
+        }
+        .arrow:hover { background: var(--blue-accent); color: white; transform: scale(1.1); }
+
+        /* TELEGRAM */
+        .tg-link { 
+            position: fixed; bottom: 35px; right: 35px; width: 65px; height: 65px; 
+            background: #0088cc; border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; z-index: 1000; transition: 0.4s ease;
+            box-shadow: 0 10px 25px rgba(0,136,204,0.4);
+        }
+        .tg-link:hover { transform: scale(1.15) rotate(12deg); }
+
+        @media (max-width: 992px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 120px; }
+            .hero-text { flex: 0 0 100%; }
+            .hero-visual { flex: 0 0 100%; height: 50vh; }
+            .card-large, .card-medium, .card-small { grid-column: span 12; }
+            .hero-illustration { opacity: 0.15; height: 320px !important; }
+            .girleating34 { top: 0; left: -10%; }
+            .man-eating-hero { bottom: 0; right: -10%; }
+            * { cursor: auto !important; }
+            #cursor-dot, #cursor-outline { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+
+    <a href="https://t.me/skripka_kava" class="tg-link" target="_blank" aria-label="Telegram">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/></svg>
+    </a>
+
+    <header>
+        <a href="#" class="logo">СКРІПКА</a>
+        <nav class="nav-links">
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>ВІДЧИНЕНО ДО 21:00</span>
+            </div>
+            <a href="#menu" class="nav-link">МЕНЮ</a>
+            <a href="#gallery" class="nav-link">АТМОСФЕРА</a>
+            <a href="tel:0730081598" class="nav-link">ЗВ'ЯЗОК</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-text">
+            <span class="hero-badge">Файна Таун • Київ</span>
+            <h1>SKRIPKA<br>KAVA</h1>
+            <p>Ваш щоденний ритуал у Файна Таун у повному 3D огляді. Повертайте стаканчик курсором та обирайте свій настрій.</p>
+            <a href="#menu" class="btn-primary">
+                ПЕРЕГЛЯНУТИ МЕНЮ
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <div class="hero-visual">
+            <!-- ДІВЧИНА -->
+            <img src="girleating35.png" alt="Girl drinking coffee" class="hero-illustration girleating34" id="girl-ill">
+            
+            <div class="cup-container">
+                <div class="cup-wrapper" id="cup-wrapper">
+                    <img src="cupfront.png" alt="Skripka Coffee Cup" class="cup-img" id="cup-view">
+                </div>
+            </div>
+
+            <!-- ХЛОПЕЦЬ -->
+            <img src="meneating1.png" alt="Man eating donut" class="hero-illustration man-eating-hero" id="man-ill">
+        </div>
+    </section>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            ✦ SOURDOUGH PASTRY ✦ SPECIALTY COFFEE ✦ NO SUGAR DESSERTS ✦ FRESH SMOOTHIES ✦ FAINA TOWN VIBES ✦ SPECIALTY COFFEE ✦ NO SUGAR DESSERTS ✦
+        </div>
+    </div>
+
+    <!-- МЕНЮ СЕКЦІЯ ТА ЗРУЧНОСТІ НАД НЕЮ -->
+    <section class="menu-section" id="menu">
+        <!-- БЛОК ЗРУЧНОСТЕЙ (ПЕРЕНЕСЕНИЙ НАД ПОВНИМ МЕНЮ) -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🐶</span>
+                <h4>Pet Friendly</h4>
+                <p>Раді вашим чотирилапим друзям! Завжди пригостимо мискою свіжої води.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚡️</span>
+                <h4>Work Friendly</h4>
+                <p>Швидкісний Wi-Fi та зручні розетки біля столиків для вашого ноутбука.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🌱</span>
+                <h4>Альтернативне молоко</h4>
+                <p>Вівсяне, мигдалеве, кокосове та безлактозне для вашої улюбленої кави.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🥐</span>
+                <h4>Свіжа випічка</h4>
+                <p>Щоранку крафтові круасани та крафтові десерти без цукру.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">ПОВНЕ МЕНЮ</h2>
+        
+        <div class="menu-grid">
+            <!-- Категорія 1: Кава -->
+            <div class="menu-category-card">
+                <h3>☕️ Спешелті Кава</h3>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Еспресо</span>
+                        <span class="menu-item-desc">Класичний концентрований напій</span>
+                    </div>
+                    <span class="menu-item-price">від 55 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Допіо</span>
+                        <span class="menu-item-desc">Подвійне еспресо</span>
+                    </div>
+                    <span class="menu-item-price">від 65 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Капучино</span>
+                        <span class="menu-item-desc">Еспресо з ніжною молочною пінкою</span>
+                    </div>
+                    <span class="menu-item-price">від 70 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Лате / Флет Вайт</span>
+                        <span class="menu-item-desc">Насичений кавовий смак та багато молока</span>
+                    </div>
+                    <span class="menu-item-price">від 80 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Фільтр-кава</span>
+                        <span class="menu-item-desc">Свіжозварена американська класика</span>
+                    </div>
+                    <span class="menu-item-price">від 60 ₴</span>
+                </div>
+            </div>
+
+            <!-- Категорія 2: Чай та Напої -->
+            <div class="menu-category-card">
+                <h3>🍵 Чай та Авторські Напої</h3>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Матча Лате</span>
+                        <span class="menu-item-desc">Японський зелений чай на молоці</span>
+                    </div>
+                    <span class="menu-item-price">від 95 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Авторський чай ( Імбир-обліпиха )</span>
+                        <span class="menu-item-desc">Зігріваючий ягідний мікс</span>
+                    </div>
+                    <span class="menu-item-price">від 85 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Крафтові Лимонади</span>
+                        <span class="menu-item-desc">Освіжаючі фруктові мікси з газом</span>
+                    </div>
+                    <span class="menu-item-price">від 80 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Детокс Смузі</span>
+                        <span class="menu-item-desc">Суперфуди та зелені мікси</span>
+                    </div>
+                    <span class="menu-item-price">від 110 ₴</span>
+                </div>
+            </div>
+
+            <!-- Категорія 3: Десерти та Випічка -->
+            <div class="menu-category-card">
+                <h3>🍰 Десерти & Випічка</h3>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Тістечко Матча без цукру</span>
+                        <span class="menu-item-desc">Легкий фірмовий десерт</span>
+                    </div>
+                    <span class="menu-item-price">від 95 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Мусові десерти без цукру</span>
+                        <span class="menu-item-desc">Ніжні текстури без зайвих калорій</span>
+                    </div>
+                    <span class="menu-item-price">від 105 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Крафтовий Круасан</span>
+                        <span class="menu-item-desc">Хрусткий класичний або з начинкою</span>
+                    </div>
+                    <span class="menu-item-price">від 75 ₴</span>
+                </div>
+                <div class="menu-item">
+                    <div>
+                        <span class="menu-item-name">Печиво та Сирники</span>
+                        <span class="menu-item-desc">Домашня випічка щодня</span>
+                    </div>
+                    <span class="menu-item-price">від 65 ₴</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ГАЛЕРЕЯ АТМОСФЕРИ -->
+    <section class="gallery-section" id="gallery">
+        <h2 class="section-title">НАША АТМОСФЕРА</h2>
+        <div class="gallery-grid">
+            <a href="https://www.google.com/maps/place/%D0%A1%D0%BA%D1%80%D1%96%D0%BF%D0%BA%D0%B0+%D0%9A%D0%B0%D0%B2%D0%B0/@50.4710644,30.4010649,3a,75y,90t/data=!3m8!1e2!3m6!1sCIHM0ogKEICAgIDqy4TRNA!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FANWiy9SBbitwPBGdeh5x_NfwPMYSlB03v3aYfvVcQ3AoD265hgIqUktGsRSNtMt_bHnRi9VJRiNZEiXZhEq6krZ61480BI64ueHZyVgnN9QCEBXyMz-vEYnnoMQF-x3zP7UZQsV6Tpw%3Dw203-h212-k-no!7i1125!8i1175!4m9!3m8!1s0x40d4cd7b691e1b85:0x4608c6966ed81201!8m2!3d50.4711191!4d30.4010644!10e5!14m1!1BCgIYIA!16s%2Fg%2F11nh98jyn7?entry=ttu" target="_blank" class="gallery-item">
+                <img src="https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SBbitwPBGdeh5x_NfwPMYSlB03v3aYfvVcQ3AoD265hgIqUktGsRSNtMt_bHnRi9VJRiNZEiXZhEq6krZ61480BI64ueHZyVgnN9QCEBXyMz-vEYnnoMQF-x3zP7UZQsV6Tpw=w800-h800-k-no" alt="Скріпка Кава Інтер'єр">
+                <div class="gallery-overlay"><span>Переглянути на Google Maps 📍</span></div>
+            </a>
+            <a href="https://www.google.com/maps/place/%D0%A1%D0%BA%D1%80%D1%96%D0%BF%D0%BA%D0%B0+%D0%9A%D0%B0%D0%B2%D0%B0/@50.4710644,30.4010649,3a,75y,90t/data=!3m8!1e2!3m6!1sCIHM0ogKEICAgIDx_OGzzQE!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FANWiy9TovD1ZpvOCPYZ-x6Aofzcp0Lsix2dKBLq3daxO7Hbcfr98ouitpOAtFKFTdI-Okp6m4NHHsHaJg9NU8eqiTjHyU7HB3rUAsXWi-Ixiog-xYUjzH9ZxqrBbODSLKFSSiiFd9jUrSg%3Dw203-h360-k-no!7i2017!8i3586!4m9!3m8!1s0x40d4cd7b691e1b85:0x4608c6966ed81201!8m2!3d50.4711191!4d30.4010644!10e5!14m1!1BCgIYIA!16s%2Fg%2F11nh98jyn7?entry=ttu" target="_blank" class="gallery-item">
+                <img src="https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TovD1ZpvOCPYZ-x6Aofzcp0Lsix2dKBLq3daxO7Hbcfr98ouitpOAtFKFTdI-Okp6m4NHHsHaJg9NU8eqiTjHyU7HB3rUAsXWi-Ixiog-xYUjzH9ZxqrBbODSLKFSSiiFd9jUrSg=w800-h800-k-no" alt="Кава та десерти">
+                <div class="gallery-overlay"><span>Переглянути на Google Maps 📍</span></div>
+            </a>
+            <a href="https://www.google.com/maps/place/%D0%A1%D0%BA%D1%80%D1%96%D0%BF%D0%BA%D0%B0+%D0%9A%D0%B0%D0%B2%D0%B0/@50.4710644,30.4010649,3a,75y,90t/data=!3m8!1e2!3m6!1sCIHM0ogKEICAgIDn18mbswE!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FANWiy9RcDxqXM-Q7-CsEWuUkRxswO4ABRAVqbHI99XkPpdH80NDZbnYWg-9ZFWz-heAJCElV9RxNbj65BUb_TIzlcVaB0-HOLt5IKQpYfyT5XMA0d0__QKBA13lb6AVK4NkxbqPreJubNg%3Dw203-h360-k-no!7i3213!8i5712!4m9!3m8!1s0x40d4cd7b691e1b85:0x4608c6966ed81201!8m2!3d50.4711191!4d30.4010644!10e5!14m1!1BCgIYIA!16s%2Fg%2F11nh98jyn7?entry=ttu" target="_blank" class="gallery-item">
+                <img src="https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RcDxqXM-Q7-CsEWuUkRxswO4ABRAVqbHI99XkPpdH80NDZbnYWg-9ZFWz-heAJCElV9RxNbj65BUb_TIzlcVaB0-HOLt5IKQpYfyT5XMA0d0__QKBA13lb6AVK4NkxbqPreJubNg=w800-h800-k-no" alt="Затишна атмосфера">
+                <div class="gallery-overlay"><span>Переглянути на Google Maps 📍</span></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ВІДГУКИ -->
+    <section class="reviews-wrap">
+        <div class="review-card">
+            <div class="review-text active">
+                <div class="review-stars">★★★★★</div>
+                "Ось це тістечко без цукру зі смаком матча - просто неймовірне! + приємна атмосфера та привітний персонал"
+                <div class="author">— Vadym Rusetski</div>
+                <div class="author-meta">Місцевий експерт • 37 відгуків • 25 фотографій • 4 роки тому</div>
+            </div>
+            <div class="review-text">
+                <div class="review-stars">★★★★★</div>
+                "Дуже крута кав'ярня зі смачною кавою і приємними бариста. Смаколики до кави завжди свіжі і смачні❤️"
+                <div class="author">— Katherine Kompanets (Katherine Kom)</div>
+                <div class="author-meta">Місцевий експерт • 101 відгук • 62 фотографії • 2 роки тому</div>
+            </div>
+            <div class="review-text">
+                <div class="review-stars">★★★★★</div>
+                "Смачна кава і затишно, тішить шо біля дому ☺️"
+                <div class="author">— Yana Vats</div>
+                <div class="author-meta">Місцевий експерт • 36 відгуків • 65 фотографій • 5 років тому</div>
+            </div>
+            <div class="review-text">
+                <div class="review-stars">★★★★★</div>
+                "Дуже атмосферно, кава 10/10! Найкраще місце для ранкового натхнення."
+                <div class="author">— Никита Дима</div>
+            </div>
+            <div class="review-text">
+                <div class="review-stars">★★★★★</div>
+                "Найкращі десерти без цукру у місті. Текстури неймовірні!"
+                <div class="author">— Liza Shpak</div>
+            </div>
+
+            <div class="arrows">
+                <div class="arrow" id="prev">←</div>
+                <div class="arrow" id="next">→</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- 1. КАСТОМНИЙ КУРСОР ---
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            dot.style.left = `${posX}px`;
+            dot.style.top = `${posY}px`;
+            outline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+        });
+
+        // --- 2. 3D СТАКАНЧИК ТА ПАРАЛАКС ІЛЮСТРАЦІЙ ---
+        const cupImg = document.getElementById('cup-view');
+        const cupWrapper = document.getElementById('cup-wrapper');
+        const manIll = document.getElementById('man-ill');
+        const girlIll = document.getElementById('girl-ill');
+
+        const images = { left: 'cupleft.png', front: 'cupfront.png', right: 'cupright.png' };
+
+        document.addEventListener('mousemove', (e) => {
+            const windowWidth = window.innerWidth;
+            const xPercent = e.clientX / windowWidth;
+            const yPercent = e.clientY / window.innerHeight;
+            
+            // Зміна ракурсу стаканчика
+            if (xPercent < 0.38) {
+                if (!cupImg.src.includes(images.left)) cupImg.src = images.left;
+            } else if (xPercent > 0.62) {
+                if (!cupImg.src.includes(images.right)) cupImg.src = images.right;
+            } else {
+                if (!cupImg.src.includes(images.front)) cupImg.src = images.front;
+            }
+
+            // Нахил стаканчика
+            gsap.to(cupWrapper, {
+                rotationY: (xPercent - 0.5) * 40,
+                rotationX: (yPercent - 0.5) * -25,
+                duration: 0.6,
+                ease: "power2.out"
+            });
+
+            // Паралакс персонажів навколо стаканчика
+            gsap.to(girlIll, {
+                x: (xPercent - 0.5) * -40,
+                y: (yPercent - 0.5) * -40,
+                duration: 1.2,
+                ease: "power1.out"
+            });
+            gsap.to(manIll, {
+                x: (xPercent - 0.5) * 35,
+                y: (yPercent - 0.5) * 35,
+                duration: 1.2,
+                ease: "power1.out"
+            });
+        });
+
+        // Плаваюча анімація стаканчика
+        gsap.to(cupWrapper, { y: -18, duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+        // --- 3. СЛАЙДЕР ВІДГУКІВ ---
+        const reviews = document.querySelectorAll('.review-text');
+        let currentReview = 0;
+
+        function showReview(index) {
+            gsap.to(reviews[currentReview], { 
+                opacity: 0, y: -15, duration: 0.3, 
+                onComplete: () => {
+                    reviews[currentReview].classList.remove('active');
+                    currentReview = index;
+                    reviews[currentReview].classList.add('active');
+                    gsap.fromTo(reviews[currentReview], { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.4 });
+                }
+            });
+        }
+
+        document.getElementById('next').onclick = () => showReview((currentReview + 1) % reviews.length);
+        document.getElementById('prev').onclick = () => showReview((currentReview - 1 + reviews.length) % reviews.length);
+
+        // --- 4. GSAP АНІМАЦІЇ ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from('.feature-card', {
+            scrollTrigger: { trigger: '.menu-section', start: 'top 80%' },
+            y: 30, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out'
+        });
+
+        gsap.from('.menu-category-card', {
+            scrollTrigger: { trigger: '.menu-grid', start: 'top 75%' },
+            y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+        });
+
+        gsap.from('.gallery-item', {
+            scrollTrigger: { trigger: '.gallery-section', start: 'top 75%' },
+            scale: 0.9, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out'
+        });
+
+        // Початкова поява персонажів
+        gsap.from(girlIll, {
+            x: -100, y: -60, opacity: 0, duration: 1.2, ease: 'power3.out'
+        });
+
+        gsap.from(manIll, {
+            x: 80, y: 50, opacity: 0, duration: 1.2, ease: 'power3.out'
+        });
+    </script>
+</body>
+</html>
