@@ -340,7 +340,7 @@
         .swiper-box {
             position: relative;
             width: 100%;
-            aspect-ratio: 1 / 1; /* Квадратний формат */
+            aspect-ratio: 1 / 1;
             border-radius: var(--radius-md);
             overflow: hidden;
             background: linear-gradient(145deg, var(--navy-deep), var(--navy-main));
@@ -363,7 +363,6 @@
             overflow: hidden;
         }
 
-        /* Розмитий фон за фото, щоб не обрізати важливі деталі кадру чи афіші */
         .swiper-slide-bg {
             position: absolute;
             inset: -15px;
@@ -378,7 +377,7 @@
             z-index: 2;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Видно 100% фотографії без обрізання */
+            object-fit: contain;
             display: block;
         }
 
@@ -622,19 +621,19 @@
                 </div>
             </div>
 
-            <!-- НИЖНІЙ РЯД: 4 КВАДРАТНІ КОМІРКИ ПО 2 ФОТО КОЖНА (АВТО-СВАЙП КОЖНІ 3 СЕК) -->
+            <!-- НИЖНІЙ РЯД: 4 КВАДРАТНІ КОМІРКИ ПО 2 ФОТО КОЖНА (ПОСЛІДОВНО PHOTO_1 ДО PHOTO_8) -->
             <div class="cards-grid-4">
-                <!-- Комірка 1: 2 фото -->
+                <!-- Комірка 1: фото 1 та 2 -->
                 <div class="photo-card">
                     <div class="swiper-box" data-swiper>
                         <div class="swiper-track">
                             <div class="swiper-slide">
-                                <div class="swiper-slide-bg" style="background-image: url('images/photo1.jpg');"></div>
-                                <img src="images/photo1.jpg" alt="Партнерство та співпраця закладів">
+                                <div class="swiper-slide-bg" style="background-image: url('images/photo_1.jpg');"></div>
+                                <img src="images/photo_1.jpg" alt="Тренінг з фізичної терапії">
                             </div>
                             <div class="swiper-slide">
-                                <div class="swiper-slide-bg" style="background-image: url('images/photo2.jpg');"></div>
-                                <img src="images/photo2.jpg" alt="Відкриття реабілітаційного простору">
+                                <div class="swiper-slide-bg" style="background-image: url('images/photo_2.jpg');"></div>
+                                <img src="images/photo_2.jpg" alt="Відкриття реабілітаційного простору">
                             </div>
                         </div>
                         <div class="swiper-dots">
@@ -644,21 +643,21 @@
                     </div>
                     <div class="photo-caption">
                         <h4>Розбудова мережі</h4>
-                        <span>Об'єднання та відкриття центрів</span>
+                        <span>Події та відкриття</span>
                     </div>
                 </div>
 
-                <!-- Комірка 2: 2 фото -->
+                <!-- Комірка 2: фото 3 та 4 -->
                 <div class="photo-card">
                     <div class="swiper-box" data-swiper>
                         <div class="swiper-track">
                             <div class="swiper-slide">
-                                <div class="swiper-slide-bg" style="background-image: url('images/photo3.jpg');"></div>
-                                <img src="images/photo3.jpg" alt="Підписання меморандумів">
+                                <div class="swiper-slide-bg" style="background-image: url('images/photo_3.jpg');"></div>
+                                <img src="images/photo_3.jpg" alt="Офіційна нарада за круглим столом">
                             </div>
                             <div class="swiper-slide">
-                                <div class="swiper-slide-bg" style="background-image: url('images/photo4.jpg');"></div>
-                                <img src="images/photo4.jpg" alt="Робочі наради та координація">
+                                <div class="swiper-slide-bg" style="background-image: url('images/photo_4.jpg');"></div>
+                                <img src="images/photo_4.jpg" alt="Командна робота">
                             </div>
                         </div>
                         <div class="swiper-dots">
@@ -668,45 +667,45 @@
                     </div>
                     <div class="photo-caption">
                         <h4>Стандарти та діалог</h4>
-                        <span>Офіційна співпраця та меморандуми</span>
+                        <span>Офіційні зустрічі та наради</span>
                     </div>
                 </div>
 
-                <!-- Комірка 3: 2 фото -->
+                <!-- Комірка 3: фото 5 та 6 -->
                 <div class="photo-card">
                     <div class="swiper-box" data-swiper>
                         <div class="swiper-track">
                             <div class="swiper-slide">
-                                <div class="swiper-slide-bg" style="background-image: url('images/photo5.jpg');"></div>
-                                <img src="images/photo5.jpg" alt="Тренінг з фізичної терапії">
+                                <div class="swiper-slide-bg" style="background-image: url('images/photo_5.jpg');"></div>
+                                <img src="images/photo_5.jpg" alt="Групове фото команди">
                             </div>
                             <div class="swiper-slide">
-                                <div class="swiper-slide-bg" style="background-image: url('images/photo6.jpg');"></div>
-                                <img src="images/photo6.jpg" alt="Тренінг з ерготерапії">
+                                <div class="swiper-slide-bg" style="background-image: url('images/photo_6.jpg');"></div>
+                                <img src="images/photo_6.jpg" alt="Команда фахівців Півдня">
                             </div>
                         </div>
                         <div class="swiper-dots">
-                            <button class="swiper-dot active" aria-label="Фото 1"></button>
+                            <button class="swiper-dot active" aria-label="Фото 1"></label>
                             <button class="swiper-dot" aria-label="Фото 2"></button>
                         </div>
                     </div>
                     <div class="photo-caption">
                         <h4>Навчання та БПР</h4>
-                        <span>Професійні тренінги для фахівців</span>
+                        <span>Професійні тренінги</span>
                     </div>
                 </div>
 
-                <!-- Комірка 4: 2 фото -->
+                <!-- Комірка 4: фото 7 та 8 -->
                 <div class="photo-card">
                     <div class="swiper-box" data-swiper>
                         <div class="swiper-track">
                             <div class="swiper-slide">
-                                <div class="swiper-slide-bg" style="background-image: url('images/photo7.jpg');"></div>
-                                <img src="images/photo7.jpg" alt="Команда реабілітологів">
+                                <div class="swiper-slide-bg" style="background-image: url('images/photo_7.jpg');"></div>
+                                <img src="images/photo_7.jpg" alt="Рукостискання у центрі реабілітації">
                             </div>
                             <div class="swiper-slide">
-                                <div class="swiper-slide-bg" style="background-image: url('images/photo8.jpg');"></div>
-                                <img src="images/photo8.jpg" alt="Спільнота фахівців Півдня">
+                                <div class="swiper-slide-bg" style="background-image: url('images/photo_8.jpg');"></div>
+                                <img src="images/photo_8.jpg" alt="Підписання меморандуму">
                             </div>
                         </div>
                         <div class="swiper-dots">
@@ -716,7 +715,7 @@
                     </div>
                     <div class="photo-caption">
                         <h4>Спільнота Альянсу</h4>
-                        <span>Мультидисциплінарні команди регіону</span>
+                        <span>Партнерство та угоди</span>
                     </div>
                 </div>
             </div>
@@ -746,7 +745,7 @@
     </footer>
 
     <script>
-        // 1. Плавний скрол з урахуванням висоти фіксованого хедера та м'яким затуханням (easeInOutCubic)
+        // Плавний скрол по якорних посиланнях
         document.querySelectorAll('a.smooth-scroll').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href');
@@ -790,7 +789,7 @@
             requestAnimationFrame(animation);
         }
 
-        // 2. Автоматичний свайп фотографій кожні 3 секунди (по 2 фото на картку)
+        // Автоматичний свайп фотографій кожні 3 секунди
         document.querySelectorAll('[data-swiper]').forEach((swiperBox, swiperIndex) => {
             const track = swiperBox.querySelector('.swiper-track');
             const slides = swiperBox.querySelectorAll('.swiper-slide');
@@ -817,7 +816,6 @@
                 goToSlide(next);
             }
 
-            // Невеликий зсув старту для кожної картки, щоб вони змінювались живо, а не строго синхронно
             let interval;
             function startInterval() {
                 interval = setInterval(nextSlide, 3000);
